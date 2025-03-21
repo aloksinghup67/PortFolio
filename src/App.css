@@ -1,4 +1,4 @@
-/* Base Styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -27,7 +27,6 @@ body {
   flex-direction: column;
   align-items: center;
 }
-/* Navigation Styles */
 .nav-container {
   position: fixed;
   top: 20px;
@@ -92,7 +91,6 @@ body {
 }
 
 
-/* Profile Section */
 .profile-section {
   width: 100%;
   max-width: 1200px;
@@ -128,7 +126,7 @@ body {
   transform: scale(1.1);
 }
 
-/* Rotating Border Effect */
+
 .image-wrapper::before {
   content: '';
   position: absolute;
@@ -173,7 +171,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Education Section */
 .education-section {
   display: flex;
   gap: 1rem;
@@ -195,7 +192,7 @@ body {
   text-decoration: none;
 }
 
-/* Social Links */
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -214,7 +211,7 @@ body {
   color: #ffffff;
 }
 
-/* Typewriter Section */
+
 .typewriter-section {
   text-align: center;
   margin: 3rem 0;
@@ -225,7 +222,7 @@ body {
   font-weight: 300;
 }
 
-/* Skills Section */
+
 .skills-section {
   width: 100%;
   max-width: 1200px;
@@ -262,7 +259,7 @@ body {
   box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
 }
 
-/* Projects Section */
+
 .projects-section {
   width: 100%;
   max-width: 1200px;
@@ -339,7 +336,7 @@ body {
   gap: 0.5rem;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .profile-content {
     flex-direction: column;
@@ -387,7 +384,6 @@ body {
     font-size: 1rem;
   }
 }
-/* Coding Profiles Section */
 .platforms-section {
   width: 100%;
   max-width: 1200px;
@@ -429,7 +425,6 @@ body {
   opacity: 0.9;
 }
 
-/* Responsive Design for Platforms */
 @media (max-width: 768px) {
   .platforms-grid {
     grid-template-columns: repeat(2, 1fr);
