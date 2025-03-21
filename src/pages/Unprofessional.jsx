@@ -51,7 +51,7 @@ const UnprofessionalMe = () => {
     <Link to="/" className="back-button">Home</Link>
     <div className="unprofessional-me">
       <div><h1 style={{ color: '#E50914' }}>Some Unprofessional things</h1><br/></div>
-      {/* Photography Section */}
+     
       <section className="photography">
         <h2>Taking random sky images 😂</h2><br/>
         <div className="photo-gallery">
@@ -62,7 +62,7 @@ const UnprofessionalMe = () => {
         </div>
       </section>
 
-      {/* Gaming Section */}
+     
       <section className="gaming">
         <h2>Playing Games</h2><br/>
         <div className="gaming-gallery">
@@ -71,13 +71,13 @@ const UnprofessionalMe = () => {
         </div>
       </section>
 
-      {/* Cringe Choir (Song Section) */}
+     
 <section className="cringe-choir">
   <h2>🙊 Cringe Choir by me</h2><br/>
   <div className="song-card">
-    {/* Music-themed background image */}
+   
     <div className="song-card-bg"></div>
-    {/* Audio controls */}
+
     <div className="song-controls">
       <button onClick={togglePlayPause} className="play-pause-btn">
         {isPlaying ? 'Pause' : 'Play'}
@@ -90,7 +90,7 @@ const UnprofessionalMe = () => {
         onChange={handleSeek}
       />
     </div>
-    {/* Hidden audio element */}  
+    
     <audio
       ref={audioRef}
       src={Song1}
@@ -100,7 +100,6 @@ const UnprofessionalMe = () => {
   </div>
 </section>
 
-      {/* Movies Section */}
       <section className="movies">
         <h2>Watching Movies</h2><br/>
         <div className="movies-gallery">
