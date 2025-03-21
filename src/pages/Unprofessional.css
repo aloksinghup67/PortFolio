@@ -2,7 +2,6 @@
     padding: 20px;
     font-family: Arial, sans-serif;
 }
-/* Back Button Styling */
 .back-button {
     position: fixed;
     top: 0.2px;
@@ -24,19 +23,16 @@
 }
 
 
-/* Global section styling */
 .unprofessional-me section {
     margin-bottom: 40px;
     text-align: center;
 }
 
-/* Common Styles for All Images */
 .unprofessional-me img {
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
 }
 
-/* Photography Section */
 .photography .photo-gallery {
     display: flex;
     justify-content: center;
@@ -58,7 +54,6 @@
     box-shadow: 0 0 20px rgba(30, 144, 255, 0.7);
 }
 
-/* Gaming Section */
 .gaming .gaming-gallery {
     display: flex;
     justify-content: center;
@@ -79,7 +74,6 @@
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 69, 0, 0.7);
 }
-/* Song Section - Cringe Choir */
 .song-card {
     max-width: 400px;
     margin: 20px auto;
@@ -98,7 +92,7 @@
   
   .song-card-bg {
     height: 200px;
-    background-image: url('../assets/jiyaan.webp'); /* Using local image */
+    background-image: url('../assets/jiyaan.webp'); 
     background-size: cover;
     background-position: center;
   }
@@ -130,7 +124,6 @@
   }
   
 
-/* Movies Section */
 .movies .movies-gallery {
     display: flex;
     justify-content: center;
