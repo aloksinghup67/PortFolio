@@ -159,6 +159,26 @@ useEffect(() => {
           </div>
           <div className="profile-info">
             <h1>Alok Singh</h1>
+
+           
+      <section className="typewriter-section">
+        <h2>
+          I'm a{' '}
+          <span style={{ color: getColor() }}>
+            <Typewriter
+              words={['Developer', 'Designer', 'Coder']}
+              loop={Infinity}
+              cursor
+              cursorStyle="|"
+              typeSpeed={100}
+              deleteSpeed={50}
+              delaySpeed={1000}
+              onLoopDone={handleType}
+              onType={handleType}
+            />
+          </span>
+        </h2>
+      </section>
             <div className="about-me">
               <p>
                 👨💻 Full-stack developer specializing in modern web technologies. 
@@ -183,27 +203,9 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Typewriter Section */}
-      <section className="typewriter-section">
-        <h2>
-          I'm a{' '}
-          <span style={{ color: getColor() }}>
-            <Typewriter
-              words={['Developer', 'Designer', 'Coder']}
-              loop={Infinity}
-              cursor
-              cursorStyle="|"
-              typeSpeed={100}
-              deleteSpeed={50}
-              delaySpeed={1000}
-              onLoopDone={handleType}
-              onType={handleType}
-            />
-          </span>
-        </h2>
-      </section>
+    
 
-      {/* Skills Section */}
+    
       <section id="skills" className="skills-section">
         <h3>My Skills</h3>
         <div className="skills-grid">
@@ -213,7 +215,7 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Projects Section */}
+      
       <section id="projects" className="projects-section">
         <h3>My Projects</h3>
         <div className="projects-grid">
