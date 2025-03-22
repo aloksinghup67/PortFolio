@@ -1,251 +1,311 @@
 .unprofessional-me {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 .close-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 1000;
-    transition: transform 0.3s ease;
-  }
-  
-  .close-button:hover {
-    transform: scale(1.1);
-  }
-  
-  .close-icon {
-    width: 25px;
-    height: 25px;
-    position: relative;
-  }
-  
-  .close-icon::before,
-  .close-icon::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #E50914;
-    border-radius: 3px;
-  }
-  
-  .close-icon::before {
-    transform: rotate(45deg);
-  }
-  
-  .close-icon::after {
-    transform: rotate(-45deg);
-  }
-  
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.close-button:hover {
+  transform: scale(1.1);
+}
+
+.close-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}
+
+.close-icon::before,
+.close-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #E50914;
+  border-radius: 3px;
+}
+
+.close-icon::before {
+  transform: rotate(45deg);
+}
+
+.close-icon::after {
+  transform: rotate(-45deg);
+}
+
 
 
 .unprofessional-me section {
-    margin-bottom: 40px;
-    text-align: center;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .unprofessional-me img {
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .photography .photo-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .photography .photo-gallery img {
-    max-width: 350px;
-    height: 150px;
-    object-fit: 100%;
-    border-radius: 12px;
-   
-    box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+  max-width: 350px;
+  height: 150px;
+  object-fit: 100%;
+  border-radius: 12px;
+ 
+  box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
 }
 
 .photography .photo-gallery img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(30, 144, 255, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.7);
 }
 
 .gaming .gaming-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 .gaming .gaming-gallery img {
-    width: 250px;
-    height: 150px;
-    object-fit: 110%;
-    border-radius: 12px;
-    border: 3px solid #ff4500;
-    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+  width: 250px;
+  height: 150px;
+  object-fit: 110%;
+  border-radius: 12px;
+  border: 3px solid #ff4500;
+  box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
 .gaming .gaming-gallery img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 69, 0, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.7);
 }
 
+/* --- Tic Tac Toe Section Styles --- */
 .tic-tac-toe-section {
-    margin: 30px 0;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .tic-tac-toe-box {
-    background: rgba(20, 20, 20, 0.85);
-    border: 2px solid #00e6ff;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 350px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 230, 255, 0.4);
-    transition: transform 0.3s ease;
-  }
-  
-  .tic-tac-toe-box:hover {
-    transform: scale(1.02);
-  }
-  
-  .tic-tac-toe-board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin: 10px 0;
-  }
-  
-  .tic-cell {
-    background: #333;
-    border: 1px solid #444;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 80px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-  }
-  
-  .tic-cell:hover {
-    background: #444;
-    transform: scale(1.05);
-  }
-  
-  .game-result {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    color: #ffea00;
-    text-shadow: 0 0 10px rgba(255, 234, 0, 0.8);
-  }
-  
-  .restart-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background: #ffea00;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
-  
-  .restart-btn:hover {
-    background: #ffd700;
-    transform: scale(1.05);
-  }
-  
- 
-  @media (max-width: 480px) {
-    .tic-tac-toe-box {
-      max-width: 300px;
-      padding: 15px;
-    }
-    .tic-cell {
-      height: 60px;
-      font-size: 1.5rem;
-    }
-  }
-  
+margin: 30px 0;
+display: flex;
+justify-content: center;
+width: 100%;
+}
+
+.tic-tac-toe-box {
+background: rgba(20, 20, 20, 0.85);
+border: 2px solid #00e6ff;
+border-radius: 10px;
+padding: 20px;
+max-width: 350px;
+width: 90%;
+text-align: center;
+box-shadow: 0 4px 12px rgba(0, 230, 255, 0.4);
+transition: transform 0.3s ease;
+position: relative;
+}
+
+.tic-tac-toe-box:hover {
+transform: scale(1.02);
+}
+
+.tic-tac-toe-board {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 5px;
+margin: 10px 0;
+transition: filter 0.3s;
+}
+
+.tic-tac-toe-board.blurred {
+filter: blur(0.5rem);
+}
+
+.tic-cell {
+background: #333;
+border: 1px solid #444;
+font-size: 2rem;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 80px;
+cursor: pointer;
+transition: background 0.3s, transform 0.2s;
+}
+
+.tic-cell:hover {
+background: #444;
+transform: scale(1.05);
+}
+
+.play-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 2;
+}
+
+.play-btn {
+padding: 10px 20px;
+font-size: 1.2rem;
+background: #00e6ff;
+color: #222;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background 0.3s, transform 0.3s;
+}
+
+.play-btn:hover {
+background: #ff007f;
+transform: scale(1.05);
+}
+
+.typewriter-box {
+background: #000;
+padding: 10px;
+margin-top: 10px;
+font-family: 'Courier New', monospace;
+font-size: 1rem;
+color: #00ff00;
+border-radius: 5px;
+box-shadow: 0 0 10px #00ff00;
+}
+
+.game-result {
+margin-top: 10px;
+font-size: 1.2rem;
+color: #00ff00;
+text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+}
+
+.restart-btn {
+margin-top: 10px;
+padding: 10px 20px;
+background: #ffea00;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background 0.3s, transform 0.3s;
+}
+
+.restart-btn:hover {
+background: #ffd700;
+transform: scale(1.05);
+}
+
+.video-container {
+margin-top: 10px;
+}
+
+/* Hide default video controls */
+.video-container video::-internal-media-controls-overlay-cast-button,
+.video-container video::-internal-media-controls-download-button {
+display: none;
+}
+.video-container video::-webkit-media-controls {
+display: none !important;
+}
+
+/* Optional responsive adjustments */
+@media (max-width: 480px) {
+.tic-tac-toe-box {
+  max-width: 300px;
+  padding: 15px;
+}
+.tic-cell {
+  height: 60px;
+  font-size: 1.5rem;
+}
+}
+
 .song-card {
-    max-width: 400px;
-    margin: 20px auto;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    background: rgba(111, 0, 139, 0.44);
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-    
-  .song-card:hover{
-    transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  max-width: 400px;
+  margin: 20px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background: rgba(111, 0, 139, 0.44);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
   
-  .song-card-bg {
-    height: 200px;
-    background-image: url('../assets/jiyaan.webp'); 
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .song-controls {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .play-pause-btn {
-    padding: 10px 20px;
-    background-color: #FFD700;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .play-pause-btn:hover {
-    background-color: #FFC107;
-  }
-  
-  input[type="range"] {
-    width: 80%;
-    cursor: pointer;
-  }
-  
+.song-card:hover{
+  transform: translateY(-8px);
+box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.song-card-bg {
+  height: 200px;
+  background-image: url('../assets/jiyaan.webp'); 
+  background-size: cover;
+  background-position: center;
+}
+
+.song-controls {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-pause-btn {
+  padding: 10px 20px;
+  background-color: #FFD700;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.play-pause-btn:hover {
+  background-color: #FFC107;
+}
+
+input[type="range"] {
+  width: 80%;
+  cursor: pointer;
+}
+
 
 .movies .movies-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 .movies .movies-gallery img {
-    width: 350px;
-    height: 350px;
-    object-fit: 120%;
-    border-radius: 12px;
-    border: 3px solid #32cd32;
-    box-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
+  width: 350px;
+  height: 350px;
+  object-fit: 120%;
+  border-radius: 12px;
+  border: 3px solid #32cd32;
+  box-shadow: 0 0 10px rgba(50, 205, 50, 0.5);
 }
 
 .movies .movies-gallery img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(50, 205, 50, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(50, 205, 50, 0.7);
 }
