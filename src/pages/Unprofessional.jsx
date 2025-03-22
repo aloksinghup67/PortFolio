@@ -10,6 +10,22 @@ import gta5 from '../assets/gta 5.jpg';
 import october from '../assets/october.jpg';
 import shawshank from '../assets/shawshank redemption.jpg';
 import Song1 from '../assets/Song1.m4a';
+import textAudio from '../assets/textaudio.mp3';
+import alokWinVideo from '../assets/alokwin.mp4';
+import userWinVideo from '../assets/userwin.mp4';
+import tieVideo from '../assets/tie.mp4';
+import clickAudioSrc from '../assets/click.mp3';
+
+const WIN_CONDITIONS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
 const TicTacToe = () => {
   const HUMAN = "X";
@@ -18,13 +34,88 @@ const TicTacToe = () => {
   const [turn, setTurn] = useState(HUMAN);
   const [gameOver, setGameOver] = useState(false);
   const [result, setResult] = useState("");
+  const [started, setStarted] = useState(false);
+  const [firstGame, setFirstGame] = useState(true);
+  const [showTypeMsg, setShowTypeMsg] = useState(false);
+  const [typeText, setTypeText] = useState("");
+  const [allowUserWin, setAllowUserWin] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const [userWinLines, setUserWinLines] = useState([]);
+  const typeAudioRef = useRef(null);
+  const clickAudioRef = useRef(null);
+
+  const typeMessage = "Alok: O you want to play wait let me grab my glasses";
+  const typeDuration = 2500; // ms
+
+  const startGame = () => {
+    setAllowUserWin(Math.random() < 0.125);
+   
+    const indices = [];
+    while (indices.length < 1) {
+      const rand = Math.floor(Math.random() * WIN_CONDITIONS.length);
+      if (!indices.includes(rand)) indices.push(rand);
+    }
+    setUserWinLines(indices.map(i => WIN_CONDITIONS[i]));
+
+    if (firstGame) {
+      setShowTypeMsg(true);
+      if (typeAudioRef.current) {
+        typeAudioRef.current.play();
+      }
+      let currentIndex = 0;
+      const interval = typeDuration / typeMessage.length;
+      const timer = setInterval(() => {
+        currentIndex++;
+        setTypeText(typeMessage.slice(0, currentIndex));
+        if (currentIndex === typeMessage.length) {
+          clearInterval(timer);
+          setTimeout(() => {
+            setShowTypeMsg(false);
+            setStarted(true);
+            setFirstGame(false);
+          }, 500);
+        }
+      }, interval);
+    } else {
+      setStarted(true);
+    }
+  };
+
+  
+  const playClick = () => {
+    if (clickAudioRef.current) {
+      clickAudioRef.current.currentTime = 0;
+      clickAudioRef.current.play();
+    }
+  };
 
   useEffect(() => {
-    if (turn === COMPUTER && !gameOver) {
-      
+    if (turn === COMPUTER && !gameOver && started) {
       const timer = setTimeout(() => {
-        const move = computerMove(board);
+        let move = null;
+        const availSpots = board
+          .map((cell, i) => (cell === "" ? i : null))
+          .filter(v => v !== null);
+        
+        let modSpots = [...availSpots];
+        userWinLines.forEach(line => {
+          const userCount = line.filter(i => board[i] === HUMAN).length;
+          const emptyCells = line.filter(i => board[i] === "");
+          if (userCount === 2 && emptyCells.length === 1) {
+            const blockCell = emptyCells[0];
+            modSpots = modSpots.filter(i => i !== blockCell);
+          }
+        });
+        if (modSpots.length > 0 && modSpots.length !== availSpots.length) {
+          move = modSpots[Math.floor(Math.random() * modSpots.length)];
+        } else if (allowUserWin) {
+          move = availSpots[Math.floor(Math.random() * availSpots.length)];
+        } else {
+          const minimaxResult = minimax(board.slice(), COMPUTER);
+          move = minimaxResult ? minimaxResult.index : null;
+        }
         if (move !== null) {
+          playClick();
           const newBoard = [...board];
           newBoard[move] = COMPUTER;
           setBoard(newBoard);
@@ -38,10 +129,11 @@ const TicTacToe = () => {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [turn, board, gameOver]);
+  }, [turn, board, gameOver, started, allowUserWin, userWinLines]);
 
   const handleClick = (index) => {
-    if (board[index] === "" && turn === HUMAN && !gameOver) {
+    if (board[index] === "" && turn === HUMAN && !gameOver && started) {
+      playClick();
       const newBoard = [...board];
       newBoard[index] = HUMAN;
       setBoard(newBoard);
@@ -56,9 +148,22 @@ const TicTacToe = () => {
 
   const endGame = (winner) => {
     setGameOver(true);
-    if (winner === COMPUTER) setResult("Alok won!");
-    else if (winner === HUMAN) setResult("You won!"); 
-    else setResult("It's a Draw!");
+    if (winner === COMPUTER) {
+      setResult("Alok won!");
+      setTimeout(() => {
+        setShowVideo(true);
+      }, 500);
+    } else if (winner === HUMAN) {
+      setResult("You won!");
+      setTimeout(() => {
+        setShowVideo(true);
+      }, 500);
+    } else {
+      setResult("It's a Draw!");
+      setTimeout(() => {
+        setShowVideo(true);
+      }, 500);
+    }
   };
 
   const restartGame = () => {
@@ -66,20 +171,13 @@ const TicTacToe = () => {
     setGameOver(false);
     setResult("");
     setTurn(HUMAN);
+    setStarted(firstGame ? false : true);
+    setShowVideo(false);
+    setTypeText("");
   };
 
   const checkWinner = (b) => {
-    const winConditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let condition of winConditions) {
+    for (let condition of WIN_CONDITIONS) {
       const [a, b1, c] = condition;
       if (b[a] && b[a] === b[b1] && b[a] === b[c]) {
         return b[a];
@@ -89,7 +187,6 @@ const TicTacToe = () => {
     return null;
   };
 
-  // Minimax algorithm implementation
   const minimax = (newBoard, player) => {
     const availSpots = newBoard
       .map((cell, index) => (cell === "" ? index : null))
@@ -138,22 +235,56 @@ const TicTacToe = () => {
   };
 
   const computerMove = (currentBoard) => {
-    const move = minimax(currentBoard.slice(), COMPUTER);
-    return move ? move.index : null;
+    const moveObj = minimax(currentBoard.slice(), COMPUTER);
+    return moveObj ? moveObj.index : null;
   };
 
   return (
     <div className="tic-tac-toe-box">
       <h2>Play a Tic Tac Toe with me</h2>
-      <div className="tic-tac-toe-board">
-        {board.map((cell, index) => (
-          <div key={index} className="tic-cell" onClick={() => handleClick(index)}>
-            {cell}
-          </div>
-        ))}
+      {firstGame && !started && (
+        <div className="play-overlay">
+          <button className="play-btn" onClick={startGame}>Play</button>
+        </div>
+      )}
+      <div className={`tic-tac-toe-board ${!started ? "blurred" : ""}`}>
+        {!showVideo &&
+          board.map((cell, index) => (
+            <div key={index} className="tic-cell" onClick={() => handleClick(index)}>
+              {cell}
+            </div>
+          ))
+        }
       </div>
-      {gameOver && <div className="game-result">{result}</div>}
-      <button className="restart-btn" onClick={restartGame}>Restart</button>
+      {showTypeMsg && (
+        <div className="typewriter-box">
+          {typeText}
+          <audio ref={typeAudioRef} src={textAudio} autoPlay />
+        </div>
+      )}
+      {gameOver && !showVideo && <div className="game-result">{result}</div>}
+      {showVideo && (
+        <div className="video-container">
+          <video width="100%" autoPlay>
+            <source 
+              src={
+                result === "Alok won!" 
+                  ? alokWinVideo 
+                  : result === "You won!" 
+                    ? userWinVideo 
+                    : tieVideo
+              } 
+              type="video/mp4" 
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
+      {(started || gameOver) && (
+        <button className="restart-btn" onClick={restartGame}>Restart</button>
+      )}
+
+      <audio ref={clickAudioRef} src={clickAudioSrc} preload="auto" />
     </div>
   );
 };
@@ -220,7 +351,6 @@ const UnprofessionalMe = () => {
             <img src={gta5} alt="GTA 5" />
           </div>
         </section>
-        
         <section className="tic-tac-toe-section">
           <TicTacToe />
         </section>
@@ -263,3 +393,5 @@ const UnprofessionalMe = () => {
 };
 
 export default UnprofessionalMe;
+
+
