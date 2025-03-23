@@ -38,31 +38,17 @@ const TicTacToe = () => {
   const [firstGame, setFirstGame] = useState(true);
   const [showTypeMsg, setShowTypeMsg] = useState(false);
   const [typeText, setTypeText] = useState("");
-  const [allowUserWin, setAllowUserWin] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const [userWinLines, setUserWinLines] = useState([]);
+  const [selectedUserCondition, setSelectedUserCondition] = useState(null);
   const typeAudioRef = useRef(null);
   const clickAudioRef = useRef(null);
-
   const typeMessage = "Alok: O you want to play wait let me grab my glasses";
-  const typeDuration = 2500;
-
-  const setRandomUserWinCondition = () => {
-    const rand = Math.floor(Math.random() * WIN_CONDITIONS.length);
-    setUserWinLines([WIN_CONDITIONS[rand]]);
-  };
-
-  const arraysEqual = (a, b) => {
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) return false;
-    }
-    return true;
-  };
+  const typeDuration = 2500; // ms
 
   const startGame = () => {
-    setAllowUserWin(Math.random() < 0.125);
-    setRandomUserWinCondition();
+    // Select a random win condition for the user at the beginning of each game.
+    const randomIndex = Math.floor(Math.random() * WIN_CONDITIONS.length);
+    setSelectedUserCondition(WIN_CONDITIONS[randomIndex]);
 
     if (firstGame) {
       setShowTypeMsg(true);
@@ -102,21 +88,22 @@ const TicTacToe = () => {
         const availSpots = board
           .map((cell, i) => (cell === "" ? i : null))
           .filter(v => v !== null);
-        
-        let modSpots = [...availSpots];
-        userWinLines.forEach(line => {
+        let mustBlock = false;
+        // Check if the user is about to complete the selected win condition.
+        if (selectedUserCondition) {
+          const line = selectedUserCondition;
           const userCount = line.filter(i => board[i] === HUMAN).length;
           const emptyCells = line.filter(i => board[i] === "");
           if (userCount === 2 && emptyCells.length === 1) {
             const blockCell = emptyCells[0];
-            modSpots = modSpots.filter(i => i !== blockCell);
+            if (availSpots.includes(blockCell)) {
+              mustBlock = true;
+              move = blockCell;
+            }
           }
-        });
-        if (modSpots.length > 0 && modSpots.length !== availSpots.length) {
-          move = modSpots[Math.floor(Math.random() * modSpots.length)];
-        } else if (allowUserWin) {
-          move = availSpots[Math.floor(Math.random() * availSpots.length)];
-        } else {
+        }
+        // Otherwise, use minimax to choose the best move.
+        if (!mustBlock) {
           const minimaxResult = minimax(board.slice(), COMPUTER);
           move = minimaxResult ? minimaxResult.index : null;
         }
@@ -135,7 +122,7 @@ const TicTacToe = () => {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [turn, board, gameOver, started, allowUserWin, userWinLines]);
+  }, [turn, board, gameOver, started, selectedUserCondition]);
 
   const handleClick = (index) => {
     if (board[index] === "" && turn === HUMAN && !gameOver && started) {
@@ -156,20 +143,14 @@ const TicTacToe = () => {
     setGameOver(true);
     if (winner === COMPUTER) {
       setResult("Alok won!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
     } else if (winner === HUMAN) {
       setResult("You won!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
     } else {
       setResult("It's a Draw!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
     }
+    setTimeout(() => {
+      setShowVideo(true);
+    }, 500);
   };
 
   const restartGame = () => {
@@ -177,34 +158,37 @@ const TicTacToe = () => {
     setGameOver(false);
     setResult("");
     setTurn(HUMAN);
-    setRandomUserWinCondition();
+    // On restart, select a new random win condition.
+    const randomIndex = Math.floor(Math.random() * WIN_CONDITIONS.length);
+    setSelectedUserCondition(WIN_CONDITIONS[randomIndex]);
     setStarted(firstGame ? false : true);
     setShowVideo(false);
     setTypeText("");
   };
 
   const checkWinner = (b) => {
+    // First, check if the computer has won (using any win condition).
     for (let condition of WIN_CONDITIONS) {
       const [a, b1, c] = condition;
       if (b[a] && b[a] === b[b1] && b[a] === b[c]) {
         if (b[a] === COMPUTER) return COMPUTER;
-        if (b[a] === HUMAN) {
-          const selectedCondition = userWinLines[0];
-          if (selectedCondition && arraysEqual(condition, selectedCondition)) {
-            return HUMAN;
-          }
-        }
       }
     }
-    if (b.every((cell) => cell !== "")) return "Draw";
+    // For the human, only count as a win if they complete the selected win condition.
+    if (selectedUserCondition) {
+      const [a, b1, c] = selectedUserCondition;
+      if (b[a] === HUMAN && b[b1] === HUMAN && b[c] === HUMAN) {
+        return HUMAN;
+      }
+    }
+    if (b.every(cell => cell !== "")) return "Draw";
     return null;
   };
 
   const minimax = (newBoard, player) => {
     const availSpots = newBoard
       .map((cell, index) => (cell === "" ? index : null))
-      .filter((val) => val !== null);
-
+      .filter(val => val !== null);
     const winner = checkWinner(newBoard);
     if (winner === HUMAN) return { score: -10 };
     else if (winner === COMPUTER) return { score: 10 };
@@ -225,7 +209,6 @@ const TicTacToe = () => {
       newBoard[availSpots[i]] = "";
       moves.push(move);
     }
-
     let bestMove;
     if (player === COMPUTER) {
       let bestScore = -Infinity;
@@ -245,11 +228,6 @@ const TicTacToe = () => {
       }
     }
     return bestMove;
-  };
-
-  const computerMove = (currentBoard) => {
-    const moveObj = minimax(currentBoard.slice(), COMPUTER);
-    return moveObj ? moveObj.index : null;
   };
 
   return (
@@ -286,7 +264,7 @@ const TicTacToe = () => {
                   : result === "You won!" 
                     ? userWinVideo 
                     : tieVideo
-              } 
+              }
               type="video/mp4" 
             />
             Your browser does not support the video tag.
@@ -296,7 +274,6 @@ const TicTacToe = () => {
       {(started || gameOver) && (
         <button className="restart-btn" onClick={restartGame}>Restart</button>
       )}
-
       <audio ref={clickAudioRef} src={clickAudioSrc} preload="auto" />
     </div>
   );
