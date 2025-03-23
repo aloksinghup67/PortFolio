@@ -45,17 +45,24 @@ const TicTacToe = () => {
   const clickAudioRef = useRef(null);
 
   const typeMessage = "Alok: O you want to play wait let me grab my glasses";
-  const typeDuration = 2500; // ms
+  const typeDuration = 2500;
+
+  const setRandomUserWinCondition = () => {
+    const rand = Math.floor(Math.random() * WIN_CONDITIONS.length);
+    setUserWinLines([WIN_CONDITIONS[rand]]);
+  };
+
+  const arraysEqual = (a, b) => {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  };
 
   const startGame = () => {
     setAllowUserWin(Math.random() < 0.125);
-   
-    const indices = [];
-    while (indices.length < 1) {
-      const rand = Math.floor(Math.random() * WIN_CONDITIONS.length);
-      if (!indices.includes(rand)) indices.push(rand);
-    }
-    setUserWinLines(indices.map(i => WIN_CONDITIONS[i]));
+    setRandomUserWinCondition();
 
     if (firstGame) {
       setShowTypeMsg(true);
@@ -81,7 +88,6 @@ const TicTacToe = () => {
     }
   };
 
-  
   const playClick = () => {
     if (clickAudioRef.current) {
       clickAudioRef.current.currentTime = 0;
@@ -171,6 +177,7 @@ const TicTacToe = () => {
     setGameOver(false);
     setResult("");
     setTurn(HUMAN);
+    setRandomUserWinCondition();
     setStarted(firstGame ? false : true);
     setShowVideo(false);
     setTypeText("");
@@ -180,7 +187,13 @@ const TicTacToe = () => {
     for (let condition of WIN_CONDITIONS) {
       const [a, b1, c] = condition;
       if (b[a] && b[a] === b[b1] && b[a] === b[c]) {
-        return b[a];
+        if (b[a] === COMPUTER) return COMPUTER;
+        if (b[a] === HUMAN) {
+          const selectedCondition = userWinLines[0];
+          if (selectedCondition && arraysEqual(condition, selectedCondition)) {
+            return HUMAN;
+          }
+        }
       }
     }
     if (b.every((cell) => cell !== "")) return "Draw";
@@ -393,5 +406,3 @@ const UnprofessionalMe = () => {
 };
 
 export default UnprofessionalMe;
-
-
