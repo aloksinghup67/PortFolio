@@ -186,7 +186,7 @@ useEffect(() => {
                 Currently exploring React & Node.js ecosystems,
                 and experimenting with AI tools. 
                 <br/><br/>
-                🎵 Music enthusiast and tech explorer who believes in the power of 
+                👨‍💻Tech explorer who believes in the power of 
                 clean code and innovative solutions. Always curious about emerging 
                 technologies and their practical applications in real-world scenarios.
                 <br/><br/>
