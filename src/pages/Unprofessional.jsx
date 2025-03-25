@@ -38,9 +38,8 @@ const TicTacToe = () => {
   const [firstGame, setFirstGame] = useState(true);
   const [showTypeMsg, setShowTypeMsg] = useState(false);
   const [typeText, setTypeText] = useState("");
-  const [allowUserWin, setAllowUserWin] = useState(false);
+  const [winningLine, setWinningLine] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
-  const [userWinLines, setUserWinLines] = useState([]);
   const typeAudioRef = useRef(null);
   const clickAudioRef = useRef(null);
 
@@ -48,15 +47,6 @@ const TicTacToe = () => {
   const typeDuration = 2500; // ms
 
   const startGame = () => {
-    setAllowUserWin(Math.random() < 0.125);
-   
-    const indices = [];
-    while (indices.length < 1) {
-      const rand = Math.floor(Math.random() * WIN_CONDITIONS.length);
-      if (!indices.includes(rand)) indices.push(rand);
-    }
-    setUserWinLines(indices.map(i => WIN_CONDITIONS[i]));
-
     if (firstGame) {
       setShowTypeMsg(true);
       if (typeAudioRef.current) {
@@ -81,7 +71,6 @@ const TicTacToe = () => {
     }
   };
 
-  
   const playClick = () => {
     if (clickAudioRef.current) {
       clickAudioRef.current.currentTime = 0;
@@ -97,31 +86,24 @@ const TicTacToe = () => {
           .map((cell, i) => (cell === "" ? i : null))
           .filter(v => v !== null);
         
-        let modSpots = [...availSpots];
-        userWinLines.forEach(line => {
-          const userCount = line.filter(i => board[i] === HUMAN).length;
-          const emptyCells = line.filter(i => board[i] === "");
-          if (userCount === 2 && emptyCells.length === 1) {
-            const blockCell = emptyCells[0];
-            modSpots = modSpots.filter(i => i !== blockCell);
-          }
-        });
-        if (modSpots.length > 0 && modSpots.length !== availSpots.length) {
-          move = modSpots[Math.floor(Math.random() * modSpots.length)];
-        } else if (allowUserWin) {
+        if (Math.random() < 0.17) {
           move = availSpots[Math.floor(Math.random() * availSpots.length)];
         } else {
           const minimaxResult = minimax(board.slice(), COMPUTER);
           move = minimaxResult ? minimaxResult.index : null;
         }
+        
         if (move !== null) {
           playClick();
           const newBoard = [...board];
           newBoard[move] = COMPUTER;
           setBoard(newBoard);
-          const winner = checkWinner(newBoard);
-          if (winner) {
-            endGame(winner);
+          const winnerObj = checkWinner(newBoard);
+          if (winnerObj) {
+            if (winnerObj.winner !== "Draw") {
+              setWinningLine(winnerObj.line);
+            }
+            endGame(winnerObj.winner);
           } else {
             setTurn(HUMAN);
           }
@@ -129,7 +111,7 @@ const TicTacToe = () => {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [turn, board, gameOver, started, allowUserWin, userWinLines]);
+  }, [turn, board, gameOver, started]);
 
   const handleClick = (index) => {
     if (board[index] === "" && turn === HUMAN && !gameOver && started) {
@@ -137,9 +119,12 @@ const TicTacToe = () => {
       const newBoard = [...board];
       newBoard[index] = HUMAN;
       setBoard(newBoard);
-      const winner = checkWinner(newBoard);
-      if (winner) {
-        endGame(winner);
+      const winnerObj = checkWinner(newBoard);
+      if (winnerObj) {
+        if (winnerObj.winner !== "Draw") {
+          setWinningLine(winnerObj.line);
+        }
+        endGame(winnerObj.winner);
       } else {
         setTurn(COMPUTER);
       }
@@ -150,19 +135,13 @@ const TicTacToe = () => {
     setGameOver(true);
     if (winner === COMPUTER) {
       setResult("Alok won!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
+      setTimeout(() => setShowVideo(true), 500);
     } else if (winner === HUMAN) {
       setResult("You won!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
+      setTimeout(() => setShowVideo(true), 500);
     } else {
       setResult("It's a Draw!");
-      setTimeout(() => {
-        setShowVideo(true);
-      }, 500);
+      setTimeout(() => setShowVideo(true), 500);
     }
   };
 
@@ -174,16 +153,17 @@ const TicTacToe = () => {
     setStarted(firstGame ? false : true);
     setShowVideo(false);
     setTypeText("");
+    setWinningLine(null);
   };
 
   const checkWinner = (b) => {
     for (let condition of WIN_CONDITIONS) {
       const [a, b1, c] = condition;
       if (b[a] && b[a] === b[b1] && b[a] === b[c]) {
-        return b[a];
+        return { winner: b[a], line: condition };
       }
     }
-    if (b.every((cell) => cell !== "")) return "Draw";
+    if (b.every((cell) => cell !== "")) return { winner: "Draw", line: null };
     return null;
   };
 
@@ -192,10 +172,12 @@ const TicTacToe = () => {
       .map((cell, index) => (cell === "" ? index : null))
       .filter((val) => val !== null);
 
-    const winner = checkWinner(newBoard);
-    if (winner === HUMAN) return { score: -10 };
-    else if (winner === COMPUTER) return { score: 10 };
-    else if (availSpots.length === 0) return { score: 0 };
+    const winnerObj = checkWinner(newBoard);
+    if (winnerObj) {
+      if (winnerObj.winner === HUMAN) return { score: -10 };
+      else if (winnerObj.winner === COMPUTER) return { score: 10 };
+      else return { score: 0 };
+    }
 
     let moves = [];
     for (let i = 0; i < availSpots.length; i++) {
@@ -234,11 +216,6 @@ const TicTacToe = () => {
     return bestMove;
   };
 
-  const computerMove = (currentBoard) => {
-    const moveObj = minimax(currentBoard.slice(), COMPUTER);
-    return moveObj ? moveObj.index : null;
-  };
-
   return (
     <div className="tic-tac-toe-box">
       <h2>Play a Tic Tac Toe with me</h2>
@@ -247,14 +224,20 @@ const TicTacToe = () => {
           <button className="play-btn" onClick={startGame}>Play</button>
         </div>
       )}
+      <div className="turn-indicator">
+        {turn === HUMAN ? "Your turn" : "Alok's turn"}
+      </div>
       <div className={`tic-tac-toe-board ${!started ? "blurred" : ""}`}>
         {!showVideo &&
           board.map((cell, index) => (
-            <div key={index} className="tic-cell" onClick={() => handleClick(index)}>
-              {cell}
+            <div
+              key={index}
+              className={`tic-cell ${winningLine && winningLine.includes(index) ? 'winning' : ''}`}
+              onClick={() => handleClick(index)}
+            >
+              {cell && <span className={`cell-content ${cell}`}>{cell}</span>}
             </div>
-          ))
-        }
+          ))}
       </div>
       {showTypeMsg && (
         <div className="typewriter-box">
@@ -266,15 +249,15 @@ const TicTacToe = () => {
       {showVideo && (
         <div className="video-container">
           <video width="100%" autoPlay>
-            <source 
+            <source
               src={
-                result === "Alok won!" 
-                  ? alokWinVideo 
-                  : result === "You won!" 
-                    ? userWinVideo 
-                    : tieVideo
-              } 
-              type="video/mp4" 
+                result === "Alok won!"
+                  ? alokWinVideo
+                  : result === "You won!"
+                  ? userWinVideo
+                  : tieVideo
+              }
+              type="video/mp4"
             />
             Your browser does not support the video tag.
           </video>
@@ -283,7 +266,6 @@ const TicTacToe = () => {
       {(started || gameOver) && (
         <button className="restart-btn" onClick={restartGame}>Restart</button>
       )}
-
       <audio ref={clickAudioRef} src={clickAudioSrc} preload="auto" />
     </div>
   );
@@ -330,7 +312,7 @@ const UnprofessionalMe = () => {
       </button>
       <div className="unprofessional-me">
         <div>
-          <h1 style={{ color: '#E50914' }}>Some Unprofessional things</h1>
+          <h1 style={{ color: '#E50914' }}>Some Unprofessional Things</h1>
           <br />
         </div>
         <section className="photography">
@@ -393,5 +375,3 @@ const UnprofessionalMe = () => {
 };
 
 export default UnprofessionalMe;
-
-      
