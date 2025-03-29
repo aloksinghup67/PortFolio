@@ -3,6 +3,12 @@ import pfp from './assets/pfp.jpg';
 import project1 from './assets/project1.jpg';
 import project2 from './assets/project2.jpg';
 import project3 from './assets/project3.jpg';
+import leetcode from './assets/leetcode.png';
+import codechef from './assets/codechef.jpg';
+import hackerrank from './assets/hackerrank.jpg';
+import codeforces from './assets/codeforces.png';
+import gcskill from './assets/gcskill.jpg';
+import github from './assets/github.png';
 import { Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 import './App.css';
@@ -69,35 +75,34 @@ function App() {
     {
       name: 'LeetCode',
       url: 'https://leetcode.com/u/Aloksingh02',
-      color: '#7B7B7B'
+      image: leetcode
     },
     {
       name: 'HackerRank',
       url: 'https://www.hackerrank.com/profile/aloksinghkh43',
-      color: '#7B7B7B'
+      image: hackerrank
     },
     {
       name: 'GitHub',
       url: 'https://github.com/aloksinghup67',
-      color: '#7B7B7B'
+      image: github
     },
     {
       name: 'CodeChef',
       url: 'https://www.codechef.com/users/aloksingh43',
-      color: '#7B7B7B'
+      image: codechef
     },
     {
       name: 'CodeForces',
       url: 'https://codeforces.com/profile/aloksinghup67',
-      color: '#7B7B7B'
+      image: codeforces
     },
     {
       name: 'Google Cloud',
       url: 'https://www.cloudskillsboost.google/public_profiles/525f02ac-2fb1-4c8a-8bab-8b8a0fa1d52e',
-      color: '#7B7B7B'
+      image: gcskill
     }
   ];
-
   const handleType = (count) => {
     const words = ['Developer', 'Designer', 'Coder'];
     setCurrentWord(words[count % words.length]);
@@ -186,7 +191,7 @@ useEffect(() => {
                 Currently exploring React & Node.js ecosystems,
                 and experimenting with AI tools. 
                 <br/><br/>
-                👨‍💻Tech explorer who believes in the power of 
+                🎵 Music enthusiast and tech explorer who believes in the power of 
                 clean code and innovative solutions. Always curious about emerging 
                 technologies and their practical applications in real-world scenarios.
                 <br/><br/>
@@ -244,23 +249,24 @@ useEffect(() => {
           ))}
         </div>
       </section>
-      <section id='coding profiles' className="platforms-section">
-        <h3>Coding Profiles</h3>
-        <div className="platforms-grid">
-          {codingProfiles.map((platform) => (
-            <a
-              href={platform.url}
-              className="platform-item"
-              key={platform.name}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ backgroundColor: platform.color }}
-            >
-              {platform.name}
-            </a>
-          ))}
+      <section id="coding profiles" className="platforms-section">
+  <h3>Coding Profiles</h3>
+  <div className="platforms-grid">
+    {codingProfiles.map((platform) => (
+      <a
+        href={platform.url}
+        className="platform-link"
+        key={platform.name}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div className="platform-item">
+          <img src={platform.image} alt={platform.name} className="platform-image" />
         </div>
-      </section>
+      </a>
+    ))}
+  </div>
+</section>
       <h1>Find me</h1>
       <div id="contact" className="social-links">
               <a href="https://www.instagram.com/aloksinghrajput08" target="_blank" rel="noreferrer">
