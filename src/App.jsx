@@ -12,8 +12,10 @@ import github from './assets/github.png';
 import { Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 import './App.css';
+import StarryBackground from './StarryBackground';
 import { sendContactEmail } from './services/emailService';
 function App() {
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -131,6 +133,7 @@ useEffect(() => {
 }, [isMenuOpen])
 
   return (
+    <StarryBackground>
     <div className="container">
       <div className="nav-container">
   <button 
@@ -328,6 +331,7 @@ useEffect(() => {
 </form>
     </section>
     </div>
+    </StarryBackground>
   );
 }
 
