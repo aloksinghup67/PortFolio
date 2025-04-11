@@ -167,7 +167,11 @@ useEffect(() => {
           </div>
           <div className="profile-info">
             <h1>Alok Singh</h1>
-
+            <div className="cv-download">
+    <a href="/AlokSinghCV.pdf" download="AlokSinghCV.pdf" className="download-cv-btn">
+      <i className="fa fa-download"></i> Download CV
+    </a>
+  </div>
            
       <section className="typewriter-section">
         <h2>
