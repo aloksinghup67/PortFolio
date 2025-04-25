@@ -3,6 +3,7 @@ import pfp from './assets/pfp.jpg';
 import project1 from './assets/project1.jpg';
 import project2 from './assets/project2.jpg';
 import project3 from './assets/project3.jpg';
+import project4 from './assets/project4.jpg';
 import leetcode from './assets/leetcode.png';
 import codechef from './assets/codechef.jpg';
 import hackerrank from './assets/hackerrank.jpg';
@@ -57,6 +58,13 @@ function App() {
       tech: ['Apis', 'Express-Node.js'],
       image: project1,
       link: 'https://sun-suna-music.onrender.com'
+    },
+    {
+      title: 'CraftFolio',
+      description: 'An upgraded portfolio maker with real time resume preview',
+      tech: ['React', 'RadixUI', 'html2Canvas','jsPDF','Tailwind CSS (with help of AI)','Local Storage'],
+      image: project4,
+      link: 'https://craftfolio-two.vercel.app/'
     },
     {
       title: 'Movie Tracker',
@@ -276,7 +284,7 @@ useEffect(() => {
 </section>
       <h1>Find me</h1>
       <div id="contact" className="social-links">
-              <a href="https://www.instagram.com/aloksinghrajput08" target="_blank" rel="noreferrer">
+              <a href="https://www.instagram.com/alok_singh_rajput43" target="_blank" rel="noreferrer">
                 <i className="fa-brands fa-instagram"></i>
               </a>
               <a href="https://www.linkedin.com/in/alok-singh-b01966265?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noreferrer">
