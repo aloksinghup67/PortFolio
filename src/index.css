@@ -75,7 +75,6 @@ button:focus-visible {
   z-index: 0;
   pointer-events: none;
   opacity: 0.5;
-  animation: bh-pulse 6s ease-in-out infinite, bh-rotate 40s linear infinite;
 }
 
 #blackhole::before {
